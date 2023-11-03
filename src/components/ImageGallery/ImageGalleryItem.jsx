@@ -1,40 +1,40 @@
-
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import Modal from '../Modal/Modal';
 import css from './ImageGallery.module.css';
 import PropTypes from 'prop-types';
 
-export default class ImageGalleryItem extends Component {
-  state = {
-    modalIsOpen: false,
+const ImageGalleryItem = ({ webformatURL, tags, id, largeImageURL }) => {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  // state = {
+  //   modalIsOpen: false,
+  // };
+  const toggleModal = () => {
+    setModalIsOpen(prevModalIsOpen => !prevModalIsOpen);
   };
 
-  toggleModal = () => {
-    this.setState(({ modalIsOpen }) => ({ modalIsOpen: !modalIsOpen }));
-  };
-
-  render() {
-    const { webformatURL, tags, id, largeImageURL } = this.props;
-    return (
-      <li className={css.ImageGalleryItem}>
-        <img
-          className={css.ImageGalleryItemImage}
-          src={webformatURL}
-          alt={tags}
-          onClick={this.toggleModal}
-          id={id}
+  // toggleModal = () => {
+  //   this.setState(({ modalIsOpen }) => ({ modalIsOpen: !modalIsOpen }));
+  // };
+  //   const { webformatURL, tags, id, largeImageURL } = this.props;
+  return (
+    <li className={css.ImageGalleryItem}>
+      <img
+        className={css.ImageGalleryItemImage}
+        src={webformatURL}
+        alt={tags}
+        onClick={toggleModal}
+        id={id}
+      />
+      {modalIsOpen && (
+        <Modal
+          largeImageURL={largeImageURL}
+          tags={tags}
+          closeModal={toggleModal}
         />
-        {this.state.modalIsOpen && (
-          <Modal
-            largeImageURL={largeImageURL}
-            tags={tags}
-            closeModal={this.toggleModal}
-          />
-        )}
-      </li>
-    );
-  }
-}
+      )}
+    </li>
+  );
+};
 
 ImageGalleryItem.propTypes = {
   webformatURL: PropTypes.string.isRequired,
@@ -42,3 +42,5 @@ ImageGalleryItem.propTypes = {
   id: PropTypes.number.isRequired,
   largeImageURL: PropTypes.string.isRequired,
 };
+
+export default ImageGalleryItem;
